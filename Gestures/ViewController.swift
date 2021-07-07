@@ -16,8 +16,8 @@ class ViewController: UIViewController {
         img.contentMode = .scaleAspectFill
         
         img.clipsToBounds = true
-        img.image = UIImage(named: "addbtn")
-        img.frame = CGRect(x: 50, y: 200, width: 300, height: 300 )
+        img.image = UIImage(named: "plus")
+        
         return img
     }()
     private let imgpicker : UIImagePickerController = {
@@ -31,14 +31,14 @@ class ViewController: UIViewController {
         title = "Image-Gesture"
         view.addSubview(myImg)
         imgpicker.delegate = self
-        let alert = UIAlertController(title: "Note", message: "Please 1st select image !!", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Note", message: "Please 1st select image  By click on [+] button !!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alert,animated: true,completion: nil)
         
         //tap it
         
         let tapGes = UITapGestureRecognizer(target: self, action: #selector(tapfunc))
-        tapGes.numberOfTapsRequired = 1
+        tapGes.numberOfTapsRequired = 3
         tapGes.numberOfTouchesRequired = 1
         view.addGestureRecognizer(tapGes)
         
@@ -80,6 +80,8 @@ class ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        myImg.frame = CGRect(x: 100, y: 100, width: 150, height: 150 )
     }
 
 }
@@ -109,29 +111,32 @@ extension ViewController: UIImagePickerControllerDelegate,UINavigationController
     
     @objc private func pinchfunc(_ gesture: UIPinchGestureRecognizer)
     {
+        print ("Pinch")
         myImg.transform = CGAffineTransform(scaleX: gesture.scale, y: gesture.scale)
     }
     @objc private func rotateFunc(_ gesture: UIRotationGestureRecognizer)
     {
+        print("Rotate")
         myImg.transform = CGAffineTransform(rotationAngle: gesture.rotation)
     }
     @objc private func swipefunc(_ swipe: UISwipeGestureRecognizer)
     {
-        if swipe.direction == .left{
-            UIImageView.animate(withDuration: 0.3, animations: {
-                self.myImg.frame = CGRect(x: self.myImg.frame.origin.x - 30, y: 200, width: 300, height: 300 )                })
+        if swipe.direction == .left {
+            UIView.animate(withDuration: 0.3) {
+                print("left")
+                self.myImg.frame = CGRect(x: self.myImg.frame.origin.x - 30, y: self.myImg.frame.origin.y , width: 300, height: 300 )                }
         }
         else if swipe.direction == .right{
-            UIImageView.animate(withDuration: 0.3, animations: {
-                self.myImg.frame = CGRect(x: self.myImg.frame.origin.x + 30, y: 200, width: 300, height: 300 )                })
+            UIImageView.animate(withDuration: 0.3) {
+                self.myImg.frame = CGRect(x: self.myImg.frame.origin.x + 30, y: 200, width: 300, height: 300 )                }
         }
         else if swipe.direction == .up{
-            UIImageView.animate(withDuration: 0.3, animations: {
-                self.myImg.frame = CGRect(x: 150, y: self.myImg.frame.origin.y - 30, width: 300, height: 300 )                })
+            UIImageView.animate(withDuration: 0.3) {
+                self.myImg.frame = CGRect(x: 150, y: self.myImg.frame.origin.y - 30, width: 300, height: 300 )                }
         }
         else if swipe.direction == .down{
-            UIImageView.animate(withDuration: 0.3, animations: {
-                self.myImg.frame = CGRect(x: 150, y: self.myImg.frame.origin.y + 30, width: 300, height: 300 )                })
+            UIImageView.animate(withDuration: 0.3) {
+                self.myImg.frame = CGRect(x: 150, y: self.myImg.frame.origin.y + 30, width: 300, height: 300 )                }
         }
         else{
             let alert = UIAlertController(title: "Warning", message: "Direction not Detected !!", preferredStyle: .alert)
